@@ -51,6 +51,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import  FormField  from '@/components/ui/form-field'
+import { useUserStore } from '@/stores/userStore' 
+import {USER_API} from '@/constants/constant'
 
 const form = ref({
   email: '',
@@ -59,18 +61,33 @@ const form = ref({
 
 const loading = ref(false)
 const router = useRouter()
+const userStore = useUserStore()
+
+interface LoginResponse {
+  token: string;
+  user: {
+    email: string;
+    fullname: string;
+  };
+}
 
 const handleLogin = async () => {
   try {
     loading.value = true
-    // Example login call (replace with your actual API logic)
-    const res = await $fetch('/api/auth/login', {
+    
+    const res = await $fetch<LoginResponse>(`${USER_API}/login`, {
       method: 'POST',
       body: form.value,
     })
 
-    // Save token and redirect
-    localStorage.setItem('token', res.token)
+    console.log('Login response:', res)
+
+    userStore.setUser({
+      token: res.token,
+      email: res.user.email,
+      fullname : res.user.fullname
+    })
+
     router.push('/')
   } catch (err) {
     alert('Login failed')

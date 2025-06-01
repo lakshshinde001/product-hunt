@@ -11,11 +11,15 @@
       <CardContent>
         <form @submit.prevent="handleRegister" class="space-y-4">
           <FormField label="Name">
-            <Input v-model="form.name" placeholder="John Doe" required />
+            <Input v-model="form.fullname" placeholder="John Doe" required />
           </FormField>
 
           <FormField label="Email">
             <Input v-model="form.email" type="email" placeholder="you@example.com" required />
+          </FormField>
+
+           <FormField label="Phone Number">
+            <Input v-model="form.phoneNumber" type="number" placeholder="8484939393" required />
           </FormField>
 
           <FormField label="Password">
@@ -45,11 +49,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import  FormField  from '@/components/ui/form-field'
+import { USER_API } from '~/constants/constant'
 
 const form = ref({
-  name: '',
+  fullname: '',
   email: '',
   password: '',
+  phoneNumber : ''
 })
 
 const loading = ref(false)
@@ -58,14 +64,23 @@ const router = useRouter()
 const handleRegister = async () => {
   try {
     loading.value = true
-    // Replace with your backend API endpoint
-    const res = await $fetch('/api/auth/register', {
+    
+     const payload = {
+      ...form.value,
+      phoneNumber: Number(form.value.phoneNumber), // convert string to number
+    }
+  
+    const res = await $fetch(`${USER_API}/register`, {
       method: 'POST',
-      body: form.value,
-    })
+      body: payload,
+    }) as any
 
-    localStorage.setItem('token', res.token)
-    router.push('/')
+    if (res.success) {
+      alert(res.message || 'Registration successful, Please login to continue')
+      router.push('/auth/login')
+    } else {
+      alert(res.message || 'Registration failed')
+    }
   } catch (err) {
     alert('Registration failed')
   } finally {

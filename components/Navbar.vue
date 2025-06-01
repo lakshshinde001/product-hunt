@@ -41,6 +41,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -49,12 +50,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 const router = useRouter()
+const userStore = useUserStore()
 
-// Replace this with actual auth logic (e.g., useAuth composable or Vuex/Pinia state)
-const isLoggedIn = computed(() => !!localStorage.getItem('token'))
+const isLoggedIn = computed(() => userStore.isLoggedIn)
 
 const logout = () => {
-  localStorage.removeItem('token')
+  userStore.clearUser()
   router.push('/auth/login')
 }
 </script>
