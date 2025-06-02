@@ -7,13 +7,17 @@ export const useUserStore = defineStore('user', {
     email: '',
     fullname: '',
     userId: '', 
+    profilePicture : '',
+    phoneNumber : '',
   }),
   actions: {
-    setUser(payload: { token: string, email: string, fullname: string, userId: string }) {
+    setUser(payload: { token: string, email: string, fullname: string, userId: string, profilePicture: string, phoneNumber: string }) {
       this.token = payload.token
       this.email = payload.email
       this.fullname = payload.fullname
       this.userId = payload.userId
+      this.profilePicture = payload.profilePicture
+      this.phoneNumber = payload.phoneNumber
     },
     clearUser() {
       this.token = null

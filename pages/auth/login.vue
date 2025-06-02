@@ -71,6 +71,8 @@ interface LoginResponse {
     email: string;
     fullname: string;
     _id: string;
+    phoneNumber: string;
+    profilePicture?: string;
   };
 }
 
@@ -90,6 +92,8 @@ const handleLogin = async () => {
       email: res.user.email,
       fullname : res.user.fullname,
       userId : res.user._id, 
+      phoneNumber : res.user.phoneNumber || '', 
+      profilePicture: res.user.profilePicture || '',
     })
 
     router.push('/')

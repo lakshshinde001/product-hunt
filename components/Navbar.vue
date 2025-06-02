@@ -22,7 +22,7 @@
               <img src="https://api.dicebear.com/7.x/initials/svg?seed=U" alt="User" class="w-8 h-8 rounded-full" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem @click="navigateTo('/profile')">Profile</DropdownMenuItem>
+              <DropdownMenuItem @click="navigateTo('/user/profile')">Profile</DropdownMenuItem>
               <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
               <DropdownMenuItem @click="navigateTo('/submit')">Upload Product</DropdownMenuItem>
             </DropdownMenuContent>
