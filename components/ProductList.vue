@@ -30,9 +30,10 @@ const props = defineProps<{ products: any[] }>()
 
 const selectedCategory = ref('')
 const sortBy = ref('latest')
+console.log("Products :", props.products)
+const categories = computed(() => [...new Set(props.products.map(p => p.category))])
 
-const categories = [...new Set(props.products.map(p => p.category))]
-console.log('Categories:', categories)
+
 
 const filteredProducts = computed(() => {
   let list = [...props.products]
@@ -42,11 +43,15 @@ const filteredProducts = computed(() => {
   }
 
   if (sortBy.value === 'trending') {
-    list.sort((a, b) => b.upvotes - a.upvotes)
+    list.sort((a, b) => (b.upvotes?.length || 0) - (a.upvotes?.length || 0))
   } else {
-    list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    list.sort(
+      (a, b) =>
+        new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    )
   }
 
   return list
 })
+
 </script>
