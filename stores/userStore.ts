@@ -6,12 +6,14 @@ export const useUserStore = defineStore('user', {
     token: null as string | null,
     email: '',
     fullname: '',
+    userId: '', 
   }),
   actions: {
-    setUser(payload: { token: string, email: string, fullname: string }) {
+    setUser(payload: { token: string, email: string, fullname: string, userId: string }) {
       this.token = payload.token
       this.email = payload.email
       this.fullname = payload.fullname
+      this.userId = payload.userId
     },
     clearUser() {
       this.token = null

@@ -1,69 +1,67 @@
 <template>
-    <section class=" pt-20 max-w-4xl mx-auto py-10 px-4 ">
-        <div v-if="product">
-            <Card class="p-6 bg-background shadow rounded-xl border">
-                <CardHeader>
-                    <CardTitle class="text-2xl font-bold">
-                        {{ product.name }}
-                    </CardTitle>
-                    <p class="text-muted-foreground">{{ product.tagline }}</p>
-                </CardHeader>
+  <section class=" pt-20 max-w-4xl mx-auto py-10 px-4 ">
+    <div v-if="product">
+      <Card class="p-6 bg-background shadow rounded-xl border">
+        <CardHeader>
+          <CardTitle class="text-2xl font-bold">
+            {{ product.name }}
+          </CardTitle>
+          <p class="text-muted-foreground">{{ product.tagline }}</p>
+        </CardHeader>
 
-                <CardContent class="space-y-4 flex justify-between w-full gap-6">
+        <CardContent class="space-y-4 flex justify-between w-full gap-6">
 
-                    <div class="w-1/2 space-y-4">
-                        <div>
-                            <img v-if="product.logo" :src="product.logo" alt="Product logo"
-                                class="w-72 h-72 object-contain" />
-                            <p>{{ product.description }}</p>
-                        </div>
+          <div class="w-1/2 space-y-4">
+            <div>
+              <img v-if="product.logo" :src="product.logo" alt="Product logo" class="w-72 h-72 object-contain" />
+              <p>{{ product.description }}</p>
+            </div>
 
-                        <div class="flex gap-2 items-center text-sm text-muted-foreground">
-                            <a :href="product.website" target="_blank" class="text-blue-500 underline">
-                                Visit Website
-                            </a>
-                            <span>• Submitted by: {{ product.user?.fullname || 'Unknown' }}</span>
-                        </div>
-                    </div>
+            <div class="flex gap-2 items-center text-sm text-muted-foreground">
+              <a :href="product.website" target="_blank" class="text-blue-500 underline">
+                Visit Website
+              </a>
+              <span>• Submitted by: {{ product.user?.fullname || 'Unknown' }}</span>
+            </div>
+          </div>
 
 
-                    <div class="w-1/2">
-                       <div class="flex items-center gap-4 mt-2">
-  <Button
-    @click="toggleVote"
-    :class="hasUpvoted ? 'bg-white text-black hover:bg-red-500 hover:text-white' : ''"
-  >
-    🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product.upvotesCount || 0 }})
-  </Button>
-</div>
+          <div class="w-1/2">
+            <div class="flex items-center gap-4 mt-2">
+              <Button @click="toggleVote"
+                :class="hasUpvoted ? 'bg-white border-black border text-black hover:bg-red-500 hover:text-white' : ''">
+                🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product?.upvotesCount || 0 }})
+              </Button>
 
-                        <div>
-                            <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
 
-                            <form @submit.prevent="addComment" class="space-y-2 mb-4">
-                                <Textarea v-model="commentText" placeholder="Write a comment..." rows="3" />
-                                <Button type="submit">Post Comment</Button>
-                            </form>
+            </div>
 
-                            <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
-                                <div v-for="comment in product.comments" :key="comment._id"
-                                    class="p-3 border rounded-md">
-                                    <p class="text-sm text-muted-foreground">
-                                        {{ comment.user?.fullname || 'User' }}
-                                    </p>
-                                    <p>{{ comment.text }}</p>
-                                </div>
-                            </div>
+            <div>
+              <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
 
-                            <p v-else class="text-sm text-muted-foreground">No comments yet.</p>
-                        </div>
+              <form @submit.prevent="addComment" class="space-y-2 mb-4">
+                <Textarea v-model="commentText" placeholder="Write a comment..." rows="3" />
+                <Button type="submit">Post Comment</Button>
+              </form>
 
-                    </div>
-                </CardContent>
+              <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
+                <div v-for="comment in product.comments" :key="comment._id" class="p-3 border rounded-md">
+                  <p class="text-sm text-muted-foreground">
+                    {{ comment.user?.fullname || 'User' }}
+                  </p>
+                  <p>{{ comment.text }}</p>
+                </div>
+              </div>
 
-            </Card>
-        </div>
-    </section>
+              <p v-else class="text-sm text-muted-foreground">No comments yet.</p>
+            </div>
+
+          </div>
+        </CardContent>
+
+      </Card>
+    </div>
+  </section>
 </template>
 
 
@@ -87,26 +85,36 @@ const comments = ref([])
 const commentText = ref('')
 const userStore = useUserStore()
 
-const fetchProduct = async () => {
-    try {
-        const res = await $fetch(`${PRODUCT_API}/${productId}`)
-
-
-        product.value = {
-            ...res.product,
-            comments: res.product.comments || [],
-            upvotesCount: res.product.upvotesCount || 0,
-        }
-        console.log('Fetched product:', product.value)
-    } catch (error) {
-        console.error('Failed to fetch product', error)
-    }
-}
-
-
-
 const hasUpvoted = ref(false);
 
+
+const fetchProduct = async () => {
+  try {
+    const res = await $fetch(`${PRODUCT_API}/${productId}`);
+    product.value = {
+      ...res.product,
+      comments: res.product.comments || [],
+      upvotesCount: res.product.upvotesCount || 0,
+      upvotes: res.product.upvotes || [],
+    };
+    updateHasUpvoted(); 
+  } catch (error) {
+    console.error('Failed to fetch product', error);
+  }
+};
+
+
+
+
+
+
+const updateHasUpvoted = () => {
+  console.log("hasopted", hasUpvoted.value)
+  console.log("ID ", userStore.userId)
+  console.log("product", product.value?.upvotes)
+  hasUpvoted.value = product.value?.upvotes?.includes(userStore.userId) || false;
+  console.log("hasopted", hasUpvoted.value)
+};
 
 
 const toggleVote = async () => {
@@ -125,13 +133,8 @@ const toggleVote = async () => {
     });
 
     if (response.success) {
-      if (hasUpvoted.value) {
-        product.value.upvotesCount -= 1;
-        hasUpvoted.value = false;
-      } else {
-        product.value.upvotesCount += 1;
-        hasUpvoted.value = true;
-      }
+      await fetchProduct();      
+      updateHasUpvoted();        
     } else {
       alert(response.message || 'Vote action failed.');
     }
@@ -141,6 +144,7 @@ const toggleVote = async () => {
     alert('Error: ' + errorMessage);
   }
 };
+
 
 
 
@@ -170,7 +174,7 @@ const addComment = async () => {
     if (response.success) {
       product.value.comments.push(response.comment);
       await fetchProduct();
-      commentText.value = ""; 
+      commentText.value = "";
     } else {
       alert(response.message || "Failed to post comment.");
     }
@@ -181,8 +185,10 @@ const addComment = async () => {
 };
 
 
-onMounted(() => {
-    fetchProduct()
-    
-})
+onMounted(async () => {
+
+  fetchProduct();
+
+});
+
 </script>

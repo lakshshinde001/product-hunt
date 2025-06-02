@@ -70,6 +70,7 @@ interface LoginResponse {
   user: {
     email: string;
     fullname: string;
+    _id: string;
   };
 }
 
@@ -87,7 +88,8 @@ const handleLogin = async () => {
     userStore.setUser({
       token: res.token,
       email: res.user.email,
-      fullname : res.user.fullname
+      fullname : res.user.fullname,
+      userId : res.user._id, 
     })
 
     router.push('/')
