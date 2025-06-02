@@ -12,7 +12,10 @@ import { ref, onMounted } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import ProductList from '@/components/ProductList.vue'
-import { PRODUCT_API } from '@/constants/constant'
+// import { PRODUCT_API } from '@/constants/constant'
+import {useApi} from '@/composables/useApi'
+
+const { PRODUCT_API } = useApi();
 
 const products = ref([])
 

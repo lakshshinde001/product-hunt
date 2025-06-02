@@ -52,7 +52,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import  FormField  from '@/components/ui/form-field'
 import { useUserStore } from '@/stores/userStore' 
-import {USER_API} from '@/constants/constant'
+// import {USER_API} from '@/constants/constant'
+import { useApi } from '@/composables/useApi'
+const { USER_API } = useApi();
 
 const form = ref({
   email: '',

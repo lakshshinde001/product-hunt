@@ -73,8 +73,12 @@ import { useRoute } from 'vue-router'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { COMMENT_API, PRODUCT_API } from '@/constants/constant'
+// import { COMMENT_API, PRODUCT_API } from '@/constants/constant'
 import { useUserStore } from '@/stores/userStore'
+
+import { useApi } from '@/composables/useApi'
+
+const { PRODUCT_API, COMMENT_API } = useApi()
 
 const route = useRoute()
 const productId = route.params.id

@@ -65,7 +65,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import { PRODUCT_API } from '@/constants/constant'
+// import { PRODUCT_API } from '@/constants/constant'
+import { useApi } from '@/composables/useApi'
+
+const { PRODUCT_API } = useApi();
 
 
 import {
