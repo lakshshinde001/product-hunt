@@ -105,19 +105,40 @@ const fetchComments = async () => {
     //   }
 }
 
+const hasUpvoted = ref(false);
+
+onBeforeMount(() => {
+  console.log(userStore.isLoggedIn);
+})
+
 const handleUpvote = async () => {
-    //   try {
-    //     await $fetch(`${PRODUCT_API}/${productId}/upvote`, {
-    //       method: 'POST',
-    //       headers: {
-    //         Authorization: `Bearer ${userStore.token}`,
-    //       },
-    //     })
-    //     // product.value.upvotes++
-    //   } catch (error) {
-    //     alert('Login to upvote.')
-    //   }
-}
+  if (!userStore.isLoggedIn) {
+    alert('Please login to upvote.');
+    return;
+  }
+
+  try {
+    const response = await $fetch(`${PRODUCT_API}/${productId}/upvote`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userStore.token}`,
+      },
+    });
+
+    if (response.success) {
+      product.value.upvotesCount += 1;
+      hasUpvoted.value = true;
+    } else {
+      alert(response.message || 'Upvote failed.');
+    }
+  } catch (error) {
+    // 💡 Correctly extract message from error object
+    const errorMessage = error?.response?._data?.message || 'Something went wrong.';
+    console.error('Upvote failed:', errorMessage);
+    alert('Error: ' + errorMessage);
+  }
+};
+
 
 const addComment = async () => {
     //   if (!commentText.value.trim()) return
