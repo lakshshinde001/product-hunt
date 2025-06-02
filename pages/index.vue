@@ -95,7 +95,7 @@ import Footer from '@/components/Footer.vue'
 import {useApi} from '@/composables/useApi'
 
 const { PRODUCT_API } = useApi();
-console.log("User API Endpoint:", PRODUCT_API);
+
 
 const products = ref([])
 

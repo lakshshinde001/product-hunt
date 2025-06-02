@@ -2,7 +2,7 @@
 export const useApi = () => {
   const config = useRuntimeConfig();
   const baseUrl = config.public.baseUrl;
-  console.log("BASE URL : ",baseUrl)
+
 
   return {
     USER_API: `${baseUrl}/users`,
