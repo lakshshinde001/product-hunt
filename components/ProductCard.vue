@@ -14,11 +14,11 @@
        
       </div>
       <div class="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-        <div class="flex items-center gap-1 p-3 border rounded-md ">
+        <div class="flex items-center gap-1 p-3 border rounded-md hover:border-orange-500 cursor-pointer transition-colors ">
           <ArrowUp class="w-4 h-4" />
-          <span>{{ product.upvotesCount || 0 }}</span>
+          <span>{{ product.upvotes.length || 0 }}</span>
         </div>
-        <div class="flex items-center gap-1 p-3 border rounded-md">
+        <div class="flex items-center gap-1 p-3 border rounded-md hover:border-orange-500 cursor-pointer transition-colors ">
 
           <MessageCircle class="w-4 h-4" />
           <span>{{ product.comments.length }}</span>
@@ -36,5 +36,9 @@
 <script setup lang="ts">
 import { ArrowUp, MessageCircle } from 'lucide-vue-next'
 
+
+
 defineProps<{ product: any }>()
+
+
 </script>

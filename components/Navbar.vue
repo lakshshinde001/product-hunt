@@ -1,12 +1,12 @@
 <template>
-  <header class="w-full px-4 py-3 bg-white dark:bg-background shadow-sm">
+  <header class="w-full px-4 py-3 bg-white dark:bg-background shadow-sm fixed ">
     <nav class="max-w-6xl mx-auto flex items-center justify-between">
-      <!-- Logo -->
+    
       <NuxtLink to="/" class="text-xl font-bold text-primary">
          ProductHuntClone
       </NuxtLink>
 
-      <!-- Links -->
+   
       <div class="flex items-center gap-6">
         <NuxtLink to="/products" class="text-sm font-medium hover:text-primary transition">
           Products
@@ -16,7 +16,7 @@
         </NuxtLink>
 
         <template v-if="isLoggedIn">
-          <!-- Profile dropdown -->
+         
           <DropdownMenu>
             <DropdownMenuTrigger class="flex items-center gap-2 cursor-pointer">
               <img src="https://api.dicebear.com/7.x/initials/svg?seed=U" alt="User" class="w-8 h-8 rounded-full" />
@@ -24,6 +24,7 @@
             <DropdownMenuContent>
               <DropdownMenuItem @click="navigateTo('/profile')">Profile</DropdownMenuItem>
               <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
+              <DropdownMenuItem @click="navigateTo('/submit')">Upload Product</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </template>

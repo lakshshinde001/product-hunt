@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <Navbar />
-    <HeroSection/>
+  <div class="pt-10">
     <section class="max-w-6xl mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold mb-6"> Explore Products</h1>
       <ProductList :products="products" />

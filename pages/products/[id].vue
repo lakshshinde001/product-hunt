@@ -1,5 +1,5 @@
 <template>
-    <section class="max-w-4xl mx-auto py-10 px-4">
+    <section class=" pt-20 max-w-4xl mx-auto py-10 px-4 ">
         <div v-if="product">
             <Card class="p-6 bg-background shadow rounded-xl border">
                 <CardHeader>
@@ -14,7 +14,7 @@
                     <div class="w-1/2 space-y-4">
                         <div>
                             <img v-if="product.logo" :src="product.logo" alt="Product logo"
-                                class="w-48 h-48 object-contain" />
+                                class="w-72 h-72 object-contain" />
                             <p>{{ product.description }}</p>
                         </div>
 
@@ -42,7 +42,7 @@
                                 <Button type="submit">Post Comment</Button>
                             </form>
 
-                            <div v-if="product.comments?.length" class="space-y-3">
+                            <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
                                 <div v-for="comment in product.comments" :key="comment._id"
                                     class="p-3 border rounded-md">
                                     <p class="text-sm text-muted-foreground">
@@ -54,6 +54,7 @@
 
                             <p v-else class="text-sm text-muted-foreground">No comments yet.</p>
                         </div>
+
                     </div>
                 </CardContent>
 
@@ -69,7 +70,7 @@ import { useRoute } from 'vue-router'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { PRODUCT_API } from '@/constants/constant'
+import { COMMENT_API, PRODUCT_API } from '@/constants/constant'
 import { useUserStore } from '@/stores/userStore'
 
 const route = useRoute()
@@ -96,73 +97,79 @@ const fetchProduct = async () => {
 }
 
 
-const fetchComments = async () => {
-    //   try {
-    //     const res = await $fetch(`${COMMENT_API}?productId=${productId}`)
-    //     comments.value = res.comments
-    //   } catch (error) {
-    //     console.error('Failed to fetch comments', error)
-    //   }
-}
 
 const hasUpvoted = ref(false);
 
-onBeforeMount(() => {
-  console.log(userStore.isLoggedIn);
-})
+
 
 const handleUpvote = async () => {
-  if (!userStore.isLoggedIn) {
-    alert('Please login to upvote.');
-    return;
-  }
-
-  try {
-    const response = await $fetch(`${PRODUCT_API}/${productId}/upvote`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${userStore.token}`,
-      },
-    });
-
-    if (response.success) {
-      product.value.upvotesCount += 1;
-      hasUpvoted.value = true;
-    } else {
-      alert(response.message || 'Upvote failed.');
+    if (!userStore.isLoggedIn) {
+        alert('Please login to upvote.');
+        return;
     }
-  } catch (error) {
-    // 💡 Correctly extract message from error object
-    const errorMessage = error?.response?._data?.message || 'Something went wrong.';
-    console.error('Upvote failed:', errorMessage);
-    alert('Error: ' + errorMessage);
-  }
+
+    try {
+        const response = await $fetch(`${PRODUCT_API}/${productId}/upvote`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${userStore.token}`,
+            },
+        });
+
+        if (response.success) {
+            product.value.upvotesCount += 1;
+            hasUpvoted.value = true;
+        } else {
+            alert(response.message || 'Upvote failed.');
+        }
+    } catch (error) {
+
+        const errorMessage = error?.response?._data?.message || 'Something went wrong.';
+        console.error('Upvote failed:', errorMessage);
+        alert('Error: ' + errorMessage);
+    }
 };
 
 
 const addComment = async () => {
-    //   if (!commentText.value.trim()) return
+  if (!userStore.isLoggedIn) {
+    alert("Please login to comment.");
+    return;
+  }
 
-    //   try {
-    //     const res = await $fetch(`${COMMENT_API}`, {
-    //       method: 'POST',
-    //       body: {
-    //         text: commentText.value,
-    //         productId,
-    //       },
-    //       headers: {
-    //         Authorization: `Bearer ${userStore.token}`,
-    //       },
-    //     })
-    //     comments.value.push(res.comment)
-    //     commentText.value = ''
-    //   } catch (error) {
-    //     alert('Login to comment.')
-    //   }
-}
+  if (!commentText.value.trim()) {
+    alert("Comment cannot be empty.");
+    return;
+  }
+
+  try {
+    const response = await $fetch(`${COMMENT_API}/${productId}/add`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userStore.token}`,
+      },
+      body: {
+        text: commentText.value,
+        // parentCommentId: parentId.value || null,
+      },
+    });
+
+    if (response.success) {
+      product.value.comments.push(response.comment);
+      await fetchProduct();
+      commentText.value = ""; 
+    } else {
+      alert(response.message || "Failed to post comment.");
+    }
+  } catch (error) {
+    console.error("Add comment error:", error);
+    alert("Something went wrong while posting the comment.");
+  }
+};
+
 
 onMounted(() => {
     fetchProduct()
-    //   fetchComments()
+    
 })
 </script>
