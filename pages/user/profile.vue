@@ -54,8 +54,8 @@
             <div v-for="product in commentedProducts" :key="product._id"
                 class="bg-white shadow-md rounded-lg p-6 mb-6 hover:shadow-lg transition-shadow duration-300">
                 <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-2xl font-semibold text-gray-800">{{ product.name }}</h3>
-                    <span class="text-sm font-medium bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">
+                    <h3 class="text-2xl font-semibold text-[#FF6154]">{{ product.name }}</h3>
+                    <span class="text-sm font-mediu bg-[#FF6154] text-white px-3 py-1 rounded-full">
                         {{ product.category }}
                     </span>
                 </div>
@@ -64,7 +64,7 @@
 
                 <p class="text-sm text-gray-500 mb-4">
                     <strong>Owner:</strong> {{ product.user.fullname }}
-                    (<a href="mailto:{{ product.user.email }}" class="text-indigo-600 hover:underline">{{
+                    (<a href="mailto:{{ product.user.email }}" class="text-[#FF6154] hover:underline">{{
                         product.user.email }}</a>)
                 </p>
 
@@ -72,7 +72,7 @@
                     <h4 class="text-lg font-semibold mb-2">Your Comments:</h4>
                     <ul class="space-y-3 max-h-60 overflow-y-auto">
                         <li v-for="comment in product.userComments" :key="comment._id"
-                            class="border-l-4 border-indigo-500 bg-indigo-50 p-3 rounded-md">
+                            class="border-l-4 text-[#FF6154] bg-orange-50 p-3 rounded-md">
                             <p class="text-gray-700">{{ comment.text }}</p>
                             <small class="text-gray-400">
                                 {{ new Date(comment.createdAt).toLocaleString() }}

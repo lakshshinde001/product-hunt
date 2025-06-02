@@ -4,8 +4,8 @@
       <h1 class="text-3xl font-bold mb-6"> Explore Products</h1>
       <ProductList :products="products" />
     </section>
-   <section class="w-1/3 border pt-20 px-4 space-y-6">
-  <div class="border rounded-lg shadow-sm p-4 bg-white">
+   <section class="w-1/3  pt-20 px-4 space-y-6">
+  <div class=" rounded-lg shadow-sm p-4 bg-white hover:border hover:border-[#f97316]">
     <h3 class="text-lg font-semibold mb-2 text-black hover:text-orange-500 cursor-pointer">
       😶‍🌫️ p/indiecursh
     </h3>
@@ -19,7 +19,7 @@
     </div>
     
   </div>
-   <div class="border rounded-lg shadow-sm p-4 bg-white">
+   <div class="border rounded-lg shadow-sm p-4 bg-white hover:border hover:border-[#f97316]">
     <h3 class="text-lg font-semibold mb-2 text-black hover:text-orange-500 cursor-pointer">
       😶‍🌫️ p/indiecursh
     </h3>
@@ -33,7 +33,7 @@
     </div>
     
   </div>
-   <div class="border rounded-lg shadow-sm p-4 bg-white">
+   <div class="border rounded-lg shadow-sm p-4 bg-white hover:border hover:border-[#f97316]">
     <h3 class="text-lg font-semibold mb-2 text-black hover:text-orange-500 cursor-pointer">
       😶‍🌫️ p/indiecursh
     </h3>
@@ -47,7 +47,7 @@
     </div>
     
   </div>
-   <div class="border rounded-lg shadow-sm p-4 bg-white">
+   <div class="border rounded-lg shadow-sm p-4 bg-white hover:border hover:border-[#f97316]">
     <h3 class="text-lg font-semibold mb-2 text-black hover:text-orange-500 cursor-pointer">
       😶‍🌫️ p/indiecursh
     </h3>
@@ -61,7 +61,7 @@
     </div>
     
   </div>
-   <div class="border rounded-lg shadow-sm p-4 bg-white">
+   <div class="border rounded-lg shadow-sm p-4 bg-white hover:border hover:border-[#f97316]">
     <h3 class="text-lg font-semibold mb-2 text-black hover:text-orange-500 cursor-pointer">
       😶‍🌫️ p/indiecursh
     </h3>
@@ -95,6 +95,7 @@ import Footer from '@/components/Footer.vue'
 import {useApi} from '@/composables/useApi'
 
 const { PRODUCT_API } = useApi();
+console.log("User API Endpoint:", PRODUCT_API);
 
 const products = ref([])
 

@@ -28,7 +28,7 @@
             />
           </FormField>
 
-          <Button class="w-full" type="submit" :loading="loading">
+          <Button class="w-full bg-[#FF6154] hover:bg-[#FF6154] cursor-pointer" type="submit" :loading="loading">
             Login
           </Button>
         </form>

@@ -2,16 +2,26 @@
   <section class=" pt-20 max-w-4xl mx-auto py-10 px-4 ">
     <div v-if="product">
       <Card class="p-6 bg-background shadow rounded-xl border">
-        <CardHeader>
-          <CardTitle class="text-2xl font-bold">
-            {{ product.name }}
-          </CardTitle>
-          <p class="text-muted-foreground">{{ product.tagline }}</p>
+        <CardHeader class="flex items-center justify-between">
+          <div>
+            <CardTitle class="text-6xl font-bold">
+              {{ product.name }}
+            </CardTitle>
+            <p class="text-muted-foreground pt-5">{{ product.tagline }}</p>
+          </div>
+          <div class="flex items-center gap-4 mt-2">
+            <Button @click="toggleVote"
+              :class="hasUpvoted ? 'bg-white border-black border text-black hover:bg-red-500 hover:text-white' : ' bg-[#FF6154] hover:bg-white hover:text-black hover:border-black border text-white'">
+              🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product?.upvotesCount || 0 }}) Points
+            </Button>
+
+
+          </div>
         </CardHeader>
 
-        <CardContent class="space-y-4 flex justify-between w-full gap-6">
+        <CardContent class="space-y-4 flex flex-col justify-between w-full gap-6">
 
-          <div class="w-1/2 space-y-4">
+          <div class="w-full space-y-4">
             <div>
               <img v-if="product.logo" :src="product.logo" alt="Product logo" class="w-72 h-72 object-contain" />
               <p>{{ product.description }}</p>
@@ -26,22 +36,15 @@
           </div>
 
 
-          <div class="w-1/2">
-            <div class="flex items-center gap-4 mt-2">
-              <Button @click="toggleVote"
-                :class="hasUpvoted ? 'bg-white border-black border text-black hover:bg-red-500 hover:text-white' : ''">
-                🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product?.upvotesCount || 0 }})
-              </Button>
+          <div class="w-full">
 
-
-            </div>
 
             <div>
               <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
 
               <form @submit.prevent="addComment" class="space-y-2 mb-4">
                 <Textarea v-model="commentText" placeholder="Write a comment..." rows="3" />
-                <Button type="submit">Post Comment</Button>
+                <Button type="submit" class="bg-[#FF6154]">Post Comment</Button>
               </form>
 
               <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
@@ -50,6 +53,7 @@
                     {{ comment.user?.fullname || 'User' }}
                   </p>
                   <p>{{ comment.text }}</p>
+
                 </div>
               </div>
 
@@ -97,7 +101,7 @@ const fetchProduct = async () => {
       upvotesCount: res.product.upvotesCount || 0,
       upvotes: res.product.upvotes || [],
     };
-    updateHasUpvoted(); 
+    updateHasUpvoted();
   } catch (error) {
     console.error('Failed to fetch product', error);
   }
@@ -133,8 +137,8 @@ const toggleVote = async () => {
     });
 
     if (response.success) {
-      await fetchProduct();      
-      updateHasUpvoted();        
+      await fetchProduct();
+      updateHasUpvoted();
     } else {
       alert(response.message || 'Vote action failed.');
     }

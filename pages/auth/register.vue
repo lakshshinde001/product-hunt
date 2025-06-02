@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-background px-4">
+  <div class="min-h-screen pt-20 flex items-center justify-center bg-gray-100 dark:bg-background px-4">
     <Card class="w-full max-w-md shadow-xl">
       <CardHeader>
         <CardTitle class="text-2xl font-bold text-center">Create an account</CardTitle>
@@ -26,7 +26,7 @@
             <Input v-model="form.password" type="password" placeholder="••••••••" required />
           </FormField>
 
-          <Button class="w-full" type="submit" :loading="loading">
+          <Button class="w-full bg-[#FF6154] hover:bg-[#FF6154] cursor-pointer" type="submit" :loading="loading">
             Register
           </Button>
         </form>
