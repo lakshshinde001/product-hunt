@@ -28,11 +28,14 @@
 
 
                     <div class="w-1/2">
-                        <div class="flex items-center gap-4 mt-2">
-                            <Button @click="handleUpvote" class="">
-                                🔥 Upvote ({{ product.upvotesCount || 0 }})
-                            </Button>
-                        </div>
+                       <div class="flex items-center gap-4 mt-2">
+  <Button
+    @click="toggleVote"
+    :class="hasUpvoted ? 'bg-white text-black hover:bg-red-500 hover:text-white' : ''"
+  >
+    🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product.upvotesCount || 0 }})
+  </Button>
+</div>
 
                         <div>
                             <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
@@ -102,33 +105,39 @@ const hasUpvoted = ref(false);
 
 
 
-const handleUpvote = async () => {
-    if (!userStore.isLoggedIn) {
-        alert('Please login to upvote.');
-        return;
+const toggleVote = async () => {
+  if (!userStore.isLoggedIn) {
+    alert('Please login to vote.');
+    return;
+  }
+
+  try {
+    const endpoint = hasUpvoted.value ? 'unvote' : 'upvote';
+    const response = await $fetch(`${PRODUCT_API}/${productId}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userStore.token}`,
+      },
+    });
+
+    if (response.success) {
+      if (hasUpvoted.value) {
+        product.value.upvotesCount -= 1;
+        hasUpvoted.value = false;
+      } else {
+        product.value.upvotesCount += 1;
+        hasUpvoted.value = true;
+      }
+    } else {
+      alert(response.message || 'Vote action failed.');
     }
-
-    try {
-        const response = await $fetch(`${PRODUCT_API}/${productId}/upvote`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${userStore.token}`,
-            },
-        });
-
-        if (response.success) {
-            product.value.upvotesCount += 1;
-            hasUpvoted.value = true;
-        } else {
-            alert(response.message || 'Upvote failed.');
-        }
-    } catch (error) {
-
-        const errorMessage = error?.response?._data?.message || 'Something went wrong.';
-        console.error('Upvote failed:', errorMessage);
-        alert('Error: ' + errorMessage);
-    }
+  } catch (error) {
+    const errorMessage = error?.response?._data?.message || 'Something went wrong.';
+    console.error('Vote failed:', errorMessage);
+    alert('Error: ' + errorMessage);
+  }
 };
+
 
 
 const addComment = async () => {

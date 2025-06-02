@@ -1,5 +1,5 @@
 <template>
-  <section class="h-screen pt-10 w-full flex items-center justify-center bg-background px-4">
+  <section class="h-screen pt-50 w-full flex items-center justify-center bg-background px-4">
     <Card class="p-6 w-2/3 bg-background shadow rounded-xl border">
       <CardHeader>
         <CardTitle class="text-3xl font-bold">Submit Your Product </CardTitle>
