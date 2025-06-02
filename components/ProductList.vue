@@ -1,10 +1,10 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center gap-4">
-      <select v-model="selectedCategory" class="border rounded p-2 text-sm">
-        <option value="">All Categories</option>
-        <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
-      </select>
+        <select v-model="selectedCategory" class="border rounded p-2 text-sm">
+          <option value="">All Categories</option>
+          <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
+        </select>
 
       <select v-model="sortBy" class="border rounded p-2 text-sm">
         <option value="latest">Latest</option>
@@ -12,7 +12,7 @@
       </select>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class=" flex flex-col gap-4">
       <ProductCard
         v-for="product in filteredProducts"
         :key="product.id"
@@ -32,6 +32,7 @@ const selectedCategory = ref('')
 const sortBy = ref('latest')
 
 const categories = [...new Set(props.products.map(p => p.category))]
+console.log('Categories:', categories)
 
 const filteredProducts = computed(() => {
   let list = [...props.products]
