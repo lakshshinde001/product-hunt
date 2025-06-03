@@ -1,72 +1,80 @@
 <template>
-  <section class=" pt-20 max-w-4xl mx-auto py-10 px-4 ">
+  <section class="pt-20 max-w-4xl mx-auto py-10 px-4">
     <div v-if="product">
       <Card class="p-6 bg-background shadow rounded-xl border">
-        <CardHeader class="flex items-center justify-between">
-          <div>
-            <CardTitle class="text-6xl font-bold">
+        <!-- Header -->
+        <CardHeader class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="w-full md:w-2/3">
+            <CardTitle class="text-3xl sm:text-4xl lg:text-6xl font-bold break-words">
               {{ product.name }}
             </CardTitle>
-            <p class="text-muted-foreground pt-5">{{ product.tagline }}</p>
+            <p class="text-muted-foreground pt-3 text-sm sm:text-base">{{ product.tagline }}</p>
           </div>
-          <div class="flex items-center gap-4 mt-2">
-            <Button @click="toggleVote"
-              :class="hasUpvoted ? 'bg-white border-black border text-black hover:bg-red-500 hover:text-white' : ' bg-[#FF6154] hover:bg-white hover:text-black hover:border-black border text-white'">
+
+          <div class="w-full md:w-auto flex justify-start md:justify-end items-center gap-4 mt-4 md:mt-0">
+            <Button
+              @click="toggleVote"
+              :class="hasUpvoted ? 'bg-white border-black border text-black hover:bg-red-500 hover:text-white' : ' bg-[#FF6154] hover:bg-white hover:text-black hover:border-black border text-white'"
+              class="w-full md:w-auto text-sm sm:text-base"
+            >
               🔥 {{ hasUpvoted ? 'Unvote' : 'Upvote' }} ({{ product?.upvotesCount || 0 }}) Points
             </Button>
-
-
           </div>
         </CardHeader>
 
-        <CardContent class="space-y-4 flex flex-col justify-between w-full gap-6">
-
+        <!-- Content -->
+        <CardContent class="space-y-6 flex flex-col justify-between w-full">
+          <!-- Product Logo & Description -->
           <div class="w-full space-y-4">
-            <div>
-              <img v-if="product.logo" :src="product.logo" alt="Product logo" class="w-72 h-72 object-contain" />
-              <p>{{ product.description }}</p>
+            <div class="flex flex-col items-center text-center sm:items-start sm:text-left space-y-4">
+              <img
+                v-if="product.logo"
+                :src="product.logo"
+                alt="Product logo"
+                class="w-40 h-40 sm:w-60 sm:h-60 object-contain"
+              />
+              <p class="text-sm sm:text-base">{{ product.description }}</p>
             </div>
 
-            <div class="flex gap-2 items-center text-sm text-muted-foreground">
-              <a :href="product.website" target="_blank" class="text-blue-500 underline">
+            <!-- Website and Submitter -->
+            <div class="flex flex-wrap gap-2 items-center text-sm text-muted-foreground">
+              <a :href="product.website" target="_blank" class="text-blue-500 underline break-all">
                 Visit Website
               </a>
               <span>• Submitted by: {{ product.user?.fullname || 'Unknown' }}</span>
             </div>
           </div>
 
-
+          <!-- Comments -->
           <div class="w-full">
+            <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
 
+            <form @submit.prevent="addComment" class="space-y-2 mb-4">
+              <Textarea v-model="commentText" placeholder="Write a comment..." rows="3" />
+              <Button type="submit" class="bg-[#FF6154] w-full sm:w-auto">Post Comment</Button>
+            </form>
 
-            <div>
-              <h3 class="text-lg font-semibold mt-6 mb-2">Comments</h3>
-
-              <form @submit.prevent="addComment" class="space-y-2 mb-4">
-                <Textarea v-model="commentText" placeholder="Write a comment..." rows="3" />
-                <Button type="submit" class="bg-[#FF6154]">Post Comment</Button>
-              </form>
-
-              <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
-                <div v-for="comment in product.comments" :key="comment._id" class="p-3 border rounded-md">
-                  <p class="text-sm text-muted-foreground">
-                    {{ comment.user?.fullname || 'User' }}
-                  </p>
-                  <p>{{ comment.text }}</p>
-
-                </div>
+            <div v-if="product.comments?.length" class="space-y-3 overflow-y-auto max-h-80 pr-2">
+              <div
+                v-for="comment in product.comments"
+                :key="comment._id"
+                class="p-3 border rounded-md break-words"
+              >
+                <p class="text-sm text-muted-foreground font-semibold">
+                  {{ comment.user?.fullname || 'User' }}
+                </p>
+                <p class="text-sm">{{ comment.text }}</p>
               </div>
-
-              <p v-else class="text-sm text-muted-foreground">No comments yet.</p>
             </div>
 
+            <p v-else class="text-sm text-muted-foreground">No comments yet.</p>
           </div>
         </CardContent>
-
       </Card>
     </div>
   </section>
 </template>
+
 
 
 <script setup lang="ts">
@@ -75,7 +83,6 @@ import { useRoute } from 'vue-router'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-// import { COMMENT_API, PRODUCT_API } from '@/constants/constant'
 import { useUserStore } from '@/stores/userStore'
 
 import { useApi } from '@/composables/useApi'
@@ -106,10 +113,6 @@ const fetchProduct = async () => {
     console.error('Failed to fetch product', error);
   }
 };
-
-
-
-
 
 
 const updateHasUpvoted = () => {
@@ -150,8 +153,6 @@ const toggleVote = async () => {
 };
 
 
-
-
 const addComment = async () => {
   if (!userStore.isLoggedIn) {
     alert("Please login to comment.");
@@ -171,7 +172,6 @@ const addComment = async () => {
       },
       body: {
         text: commentText.value,
-        // parentCommentId: parentId.value || null,
       },
     });
 

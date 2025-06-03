@@ -49,7 +49,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import  FormField  from '@/components/ui/form-field'
-// import { USER_API } from '~/constants/constant'
 import { useApi } from '@/composables/useApi'
 const { USER_API } = useApi();
 
@@ -69,7 +68,7 @@ const handleRegister = async () => {
     
      const payload = {
       ...form.value,
-      phoneNumber: Number(form.value.phoneNumber), // convert string to number
+      phoneNumber: Number(form.value.phoneNumber), 
     }
   
     const res = await $fetch(`${USER_API}/register`, {
