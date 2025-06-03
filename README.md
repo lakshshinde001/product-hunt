@@ -1,75 +1,76 @@
-# Nuxt Minimal Starter
+# 🚀 Product Hunt Clone with Nuxt 3
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A full-stack Product Hunt–style web application built using **Nuxt 3**, **Express.js**, **MongoDB**, and **Tailwind CSS**. Users can register, submit products, upvote, and comment — all in a modern, mobile-responsive interface.
 
-## Setup
+---
 
-Make sure to install dependencies:
+## 🔥 Live Preview
+
+https://product-hunt-pi.vercel.app/
+
+---
+
+## 🧩 Core Features
+
+### 🔐 Authentication (JWT-based)
+- User registration and login
+- Auth-protected routes using JWT
+- Persistent login via secure tokens
+
+### 📝 Product Submission
+- Form includes: name, tagline, description, website URL
+- Logo/image upload
+- Category selection: AI, SaaS, Devtools, Other
+
+### 🌍 Explore Page
+- Product listing by category
+- Filter: category
+- Sort: trending or latest
+
+### 📄 Product Detail Page
+- Full product info: logo, name, description, link
+- Submitted by user info
+- Comments section with real-time posting
+- Upvote/unvote support
+
+### 👍 Upvoting System
+- Authenticated users can upvote/unvote
+- Vote count updates immediately
+- Prevents double voting
+
+### 💬 Commenting
+- Add text comments to product detail pages
+- Comments show username and message
+- Works in real-time per session
+
+### 👤 User Profile Page
+- Shows products submitted by the user
+- Displays upvoted products
+- Personal information and avatar
+
+---
+
+## 🛠️ Tech Stack
+
+| Frontend        | Backend         | Database  | Styling         | Other |
+|----------------|-----------------|-----------|------------------|-------|
+| Nuxt 3 (Vue 3) | Express.js       | MongoDB   | Tailwind CSS     | JWT, Multer (file uploads) |
+
+---
+
+
+
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the Repository
 
 ```bash
-# npm
+git clone https://github.com/yourusername/producthunt-clone.git
+cd producthunt-clone
+
+
 npm install
 
-# pnpm
-pnpm install
 
-# yarn
-yarn install
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
